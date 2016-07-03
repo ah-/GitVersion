@@ -9,6 +9,7 @@
 
         public static void SetSearchPath(string addinDirectoryPath)
         {
+#if !NETSTANDARD
             if (isPathSet)
             {
                 return;
@@ -18,8 +19,10 @@
             var existingPath = Environment.GetEnvironmentVariable("PATH");
             var newPath = string.Concat(nativeBinaries, Path.PathSeparator, existingPath);
             Environment.SetEnvironmentVariable("PATH", newPath);
+#endif
         }
 
+#if !NETSTANDARD
         static string GetProcessorArchitecture()
         {
             if (Environment.Is64BitProcess)
@@ -28,5 +31,6 @@
             }
             return "x86";
         }
+#endif
     }
 }
