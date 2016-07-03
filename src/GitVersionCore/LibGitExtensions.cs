@@ -33,7 +33,7 @@ namespace GitVersion
         }
 
 
-        public static Commit FindCommitBranchWasBranchedFrom([NotNull] this Branch branch, IRepository repository, params Branch[] excludedBranches)
+        public static Commit FindCommitBranchWasBranchedFrom(this Branch branch, IRepository repository, params Branch[] excludedBranches)
         {
             const string missingTipFormat = "{0} has no tip. Please see http://example.com/docs for information on how to fix this.";
 
@@ -117,7 +117,7 @@ namespace GitVersion
                 b.FriendlyName) != branch.FriendlyName;
         }
 
-        public static IEnumerable<Branch> GetBranchesContainingCommit([NotNull] this Commit commit, IRepository repository, IList<Branch> branches, bool onlyTrackedBranches)
+        public static IEnumerable<Branch> GetBranchesContainingCommit(this Commit commit, IRepository repository, IList<Branch> branches, bool onlyTrackedBranches)
         {
             if (commit == null)
             {
