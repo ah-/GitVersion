@@ -2,7 +2,7 @@ namespace GitVersion
 {
     using System;
 
-    class ConsoleAdapter : IConsole
+    public class ConsoleAdapter : IConsole
     {
         public void WriteLine(string msg)
         {
