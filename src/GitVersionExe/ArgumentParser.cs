@@ -32,7 +32,7 @@ namespace GitVersion
             {
                 return new Arguments
                 {
-                    TargetPath = Environment.CurrentDirectory
+                    TargetPath = Directory.GetCurrentDirectory()
                 };
             }
 
@@ -50,7 +50,7 @@ namespace GitVersion
             {
                 return new Arguments
                 {
-                    TargetPath = Environment.CurrentDirectory,
+                    TargetPath = Directory.GetCurrentDirectory(),
                     Init = true
                 };
             }
@@ -318,7 +318,7 @@ namespace GitVersion
                 // If the first argument is a switch, it should already have been consumed in the above loop,
                 // or else a WarningException should have been thrown and we wouldn't end up here.
                 arguments.TargetPath = firstArgumentIsSwitch
-                    ? Environment.CurrentDirectory
+                    ? Directory.GetCurrentDirectory()
                     : firstArgument;
             }
 

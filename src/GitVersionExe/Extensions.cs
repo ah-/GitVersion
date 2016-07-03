@@ -47,7 +47,7 @@
             }
             catch
             {
-                path = Path.Combine(Environment.CurrentDirectory, path);
+                path = Path.Combine(Directory.GetCurrentDirectory(), path);
 
                 try
                 {
