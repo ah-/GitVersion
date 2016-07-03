@@ -23,8 +23,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.IO;
 using System.Text;
+#if !NETSTANDARD
 using System.Web;
 using System.Web.UI;
+#endif
 
 namespace GitVersion
 {
@@ -144,6 +146,7 @@ namespace GitVersion
                 expression = expression.Substring(0, colonIndex);
             }
 
+#if !NETSTANDARD
             try
             {
                 if (string.IsNullOrEmpty(format))
@@ -156,6 +159,9 @@ namespace GitVersion
             {
                 throw new FormatException("Failed to format '" + expression + "'.");
             }
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         enum State
