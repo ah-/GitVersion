@@ -1,4 +1,5 @@
-﻿namespace GitVersion
+﻿#if !NETSTANDARD
+namespace GitVersion
 {
     using System;
     using System.Net;
@@ -60,3 +61,4 @@
         }
     }
 }
+#endif

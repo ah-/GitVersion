@@ -9,7 +9,9 @@
         {
             new ContinuaCi(),
             new TeamCity(),
+#if !NETSTANDARD
             new AppVeyor(),
+#endif
             new MyGet(),
             new Jenkins(),
             new GitLabCi(),
