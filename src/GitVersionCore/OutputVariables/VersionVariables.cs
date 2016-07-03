@@ -8,6 +8,7 @@
     using GitVersion.Helpers;
 
     using YamlDotNet.Serialization;
+    using System.Reflection;
 
     public class VersionVariables : IEnumerable<KeyValuePair<string, string>>
     {
@@ -91,9 +92,15 @@
         {
             get
             {
-                return typeof(VersionVariables)
-                    .GetProperties()
-                    .Where(p => !p.GetCustomAttributes(typeof(ReflectionIgnoreAttribute), false).Any())
+#if NETSTANDARD
+                var properties = typeof(VersionVariables).GetTypeInfo().DeclaredProperties
+                    .Where(p => !p.CustomAttributes.Any(a => a.AttributeType == typeof(ReflectionIgnoreAttribute)));
+#else
+                var properties = typeof(VersionVariables).GetProperties()
+                    .Where(p => !p.GetCustomAttributes(typeof(ReflectionIgnoreAttribute), false).Any());
+#endif
+
+                return properties
                     .Select(p => p.Name)
                     .OrderBy(a => a);
             }
@@ -107,15 +114,27 @@
         [ReflectionIgnore]
         public string this[string variable]
         {
-            get { return (string)typeof(VersionVariables).GetProperty(variable).GetValue(this, null); }
+            get {
+#if NETSTANDARD
+                return (string)typeof(VersionVariables).GetTypeInfo().GetDeclaredProperty(variable).GetValue(this, null);
+#else
+                return (string)typeof(VersionVariables).GetProperty(variable).GetValue(this, null);
+#endif
+            }
         }
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
             var type = typeof(string);
-            return typeof(VersionVariables)
-                .GetProperties()
-                .Where(p => p.PropertyType == type && !p.GetIndexParameters().Any() && !p.GetCustomAttributes(typeof(ReflectionIgnoreAttribute), false).Any())
+#if NETSTANDARD
+            var properties = typeof(VersionVariables).GetTypeInfo().DeclaredProperties
+                .Where(p => p.PropertyType == type && !p.GetIndexParameters().Any() &&
+                    !p.CustomAttributes.Any(a => a.AttributeType == typeof(ReflectionIgnoreAttribute)));
+#else
+            var properties = typeof(VersionVariables).GetProperties()
+                .Where(p => p.PropertyType == type && !p.GetIndexParameters().Any() && !p.GetCustomAttributes(typeof(ReflectionIgnoreAttribute), false).Any());
+#endif
+            return properties
                 .Select(p => new KeyValuePair<string, string>(p.Name, (string)p.GetValue(this, null)))
                 .GetEnumerator();
         }
@@ -128,7 +147,11 @@
         public static VersionVariables FromDictionary(IEnumerable<KeyValuePair<string, string>> properties)
         {
             var type = typeof(VersionVariables);
+#if NETSTANDARD
+            var ctor = type.GetTypeInfo().GetConstructors().Single();
+#else
             var ctor = type.GetConstructors().Single();
+#endif
             var ctorArgs = ctor.GetParameters()
                 .Select(p => properties.Single(v => string.Equals(v.Key, p.Name, StringComparison.CurrentCultureIgnoreCase)).Value)
                 .Cast<object>()
@@ -164,7 +187,11 @@
 
         public bool ContainsKey(string variable)
         {
+#if NETSTANDARD
+            return typeof(VersionVariables).GetTypeInfo().GetProperty(variable) != null;
+#else
             return typeof(VersionVariables).GetProperty(variable) != null;
+#endif
         }
 
         sealed class ReflectionIgnoreAttribute : Attribute

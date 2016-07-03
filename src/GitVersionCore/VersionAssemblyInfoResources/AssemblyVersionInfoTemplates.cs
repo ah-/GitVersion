@@ -6,6 +6,7 @@
     using System.Linq;
     using GitVersionCore.Extensions;
     using JetBrains.Annotations;
+    using System.Reflection;
 
     public class AssemblyVersionInfoTemplates
     {
@@ -65,7 +66,12 @@
             if (enclosingNamespace == null)
                 throw new InvalidOperationException("The AssemblyVersionInfoTemplates class is missing its namespace.");
 
-            foreach (var name in typeof(AssemblyVersionInfoTemplates).Assembly.GetManifestResourceNames())
+#if NETSTANDARD
+            var assembly = typeof(AssemblyVersionInfoTemplates).GetTypeInfo().Assembly;
+#else
+            var assembly = typeof(AssemblyVersionInfoTemplates).Assembly;
+#endif
+            foreach (var name in assembly.GetManifestResourceNames())
             {
                 if (name.StartsWith(enclosingNamespace))
                     yield return new FileInfo(name);

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using YamlDotNet.Serialization;
 
     public class Config
@@ -85,7 +86,12 @@
 
         private T MergeObjects<T>(T target, T source)
         {
-            typeof(T).GetProperties()
+#if NETSTANDARD
+            var properties = typeof(T).GetTypeInfo().GetProperties();
+#else
+            var properties = typeof(T).GetProperties();
+#endif
+            properties
                 .Where(prop => prop.CanRead && prop.CanWrite)
                 .Select(_ => new { prop = _, value = _.GetValue(source, null) })
                 .Where(_ => _.value != null)
