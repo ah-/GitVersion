@@ -1,8 +1,9 @@
 namespace GitVersion
 {
-    using System.ComponentModel;
     using System.IO;
     using GitVersion.VersionCalculation;
+    using GitTools;
+    using System;
 
     public class GitVersionFinder
     {

@@ -1,7 +1,7 @@
 ﻿namespace GitVersion
 {
     using System;
-    using System.ComponentModel;
+    using GitTools;
 
     public static class VariableProvider
     {

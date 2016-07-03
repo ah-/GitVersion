@@ -1,11 +1,10 @@
 namespace GitVersion
 {
     using System;
-    using System.ComponentModel;
     using System.Linq;
     using GitVersion.Helpers;
-
     using LibGit2Sharp;
+    using GitTools;
 
     public class ExecuteCore
     {
