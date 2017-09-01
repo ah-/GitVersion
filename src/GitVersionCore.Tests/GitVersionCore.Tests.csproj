@@ -169,12 +169,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitVersionCore\GitVersionCore.csproj">
-      <Project>{f9741a0d-b9d7-4557-9a1c-a7252c1071f5}</Project>
-      <Name>GitVersionCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="FodyWeavers.xml" />
     <Content Include="Approved\JsonVersionBuilderTests.Json.approved.txt" />
     <Content Include="Approved\VariableProviderTests.ProvidesVariablesInContinuousDeliveryModeForPreRelease.approved.txt" />
