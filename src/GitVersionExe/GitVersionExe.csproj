@@ -102,12 +102,6 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GitVersionCore\GitVersionCore.csproj">
-      <Project>{f9741a0d-b9d7-4557-9a1c-a7252c1071f5}</Project>
-      <Name>GitVersionCore</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="Clean">
     <ItemGroup>
@@ -150,7 +144,7 @@
     </ItemGroup>
     <!-- NugetExeBuild -->
     <MakeDir Directories="$(BuildDir)NuGetExeBuild" />
-    <Copy SourceFiles="@(NativeBinaries)" DestinationFiles="@(NativeBinaries->'$(BuildDir)NuGetExeBuild\tools\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(NativeBinaries)" DestinationFiles="@(NativeBinaries-&gt;'$(BuildDir)NuGetExeBuild\tools\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.pdb" DestinationFolder="$(BuildDir)NuGetExeBuild\tools" Condition="Exists('$(OutputPath)GitVersion.pdb')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.exe.mdb" DestinationFolder="$(BuildDir)NuGetExeBuild\tools" Condition="Exists('$(OutputPath)GitVersion.exe.mdb')" />
     <Copy SourceFiles="$(OutputPath)ILMergeTemp\GitVersion.exe" DestinationFolder="$(BuildDir)NuGetExeBuild\tools" />
@@ -160,14 +154,14 @@
     <PepitaPackage.CreatePackageTask NuGetBuildDirectory="$(BuildDir)NuGetExeBuild" MetadataAssembly="$(OutputPath)ILMergeTemp\GitVersion.exe" Version="$(GitVersion_NuGetVersion)" />
     <!-- NugetCommandLineBuild -->
     <MakeDir Directories="$(BuildDir)NuGetCommandLineBuild" />
-    <Copy SourceFiles="@(NativeBinaries)" DestinationFiles="@(NativeBinaries->'$(BuildDir)NuGetCommandLineBuild\tools\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(NativeBinaries)" DestinationFiles="@(NativeBinaries-&gt;'$(BuildDir)NuGetCommandLineBuild\tools\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.pdb" DestinationFolder="$(BuildDir)NuGetCommandLineBuild\tools" Condition="Exists('$(OutputPath)GitVersion.pdb')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.exe.mdb" DestinationFolder="$(BuildDir)NuGetCommandLineBuild\tools" Condition="Exists('$(OutputPath)GitVersion.exe.mdb')" />
     <Copy SourceFiles="$(OutputPath)ILMergeTemp\GitVersion.exe" DestinationFolder="$(BuildDir)NuGetCommandLineBuild\tools" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\GitVersion.CommandLine.nuspec" DestinationFolder="$(BuildDir)NuGetCommandLineBuild" />
     <PepitaPackage.CreatePackageTask NuGetBuildDirectory="$(BuildDir)NuGetCommandLineBuild" MetadataAssembly="$(OutputPath)ILMergeTemp\GitVersion.exe" Version="$(GitVersion_NuGetVersion)" />
     <!-- TfsBuildTask -->
-    <Copy SourceFiles="@(NativeBinaries)" DestinationFiles="@(NativeBinaries->'$(BuildDir)GitVersionTfsTaskBuild\GitVersionTask\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(NativeBinaries)" DestinationFiles="@(NativeBinaries-&gt;'$(BuildDir)GitVersionTfsTaskBuild\GitVersionTask\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.pdb" DestinationFolder="$(BuildDir)GitVersionTfsTaskBuild" Condition="Exists('$(OutputPath)GitVersion.pdb')" />
     <Copy SourceFiles="$(SolutionDir)GitVersionTfsTask\extension-icon.png" DestinationFolder="$(BuildDir)GitVersionTfsTaskBuild" />
     <Copy SourceFiles="$(SolutionDir)GitVersionTfsTask\manifest.json" DestinationFolder="$(BuildDir)GitVersionTfsTaskBuild" />
@@ -185,7 +179,7 @@
     <!-- Gem -->
     <MakeDir Directories="$(BuildDir)GemBuild" />
     <!-- Gem can only treat files it knows about, so it throws an error for .so and .dylib files when building on Windows -->
-    <Copy SourceFiles="@(WindowsBinaries)" DestinationFiles="@(WindowsBinaries->'$(BuildDir)GemBuild\bin\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(WindowsBinaries)" DestinationFiles="@(WindowsBinaries-&gt;'$(BuildDir)GemBuild\bin\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.pdb" DestinationFolder="$(BuildDir)GemBuild\bin" Condition="Exists('$(OutputPath)GitVersion.pdb')" />
     <Copy SourceFiles="$(OutputPath)GitVersion.exe.mdb" DestinationFolder="$(BuildDir)GemBuild\bin" Condition="Exists('$(OutputPath)GitVersion.exe.mdb')" />
     <Copy SourceFiles="$(OutputPath)ILMergeTemp\GitVersion.exe" DestinationFolder="$(BuildDir)GemBuild\bin" />
@@ -198,7 +192,7 @@
       <GemFiles Include="$(ProjectDir)GemAssets\Guardfile" />
       <GemFiles Include="$(ProjectDir)GemAssets\Gemfile" />
     </ItemGroup>
-    <Copy SourceFiles="@(GemFiles)" DestinationFiles="@(GemFiles->'$(BuildDir)GemBuild\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(GemFiles)" DestinationFiles="@(GemFiles-&gt;'$(BuildDir)GemBuild\%(RecursiveDir)%(Filename)%(Extension)')" />
     <PropertyGroup>
       <GemVersion Condition="'$(GitVersion_PreReleaseTag)' == ''">$(GitVersion_MajorMinorPatch)</GemVersion>
       <GemVersion Condition="'$(GitVersion_PreReleaseTag)' != ''">$(GitVersion_MajorMinorPatch).$(GitVersion_PreReleaseTag)</GemVersion>
